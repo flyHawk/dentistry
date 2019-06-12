@@ -1,0 +1,7 @@
+et-xmlfile==1.0.1
+jdcal==1.4.1
+numpy==1.16.4
+openpyxl==2.6.2
+Pillow==6.0.0
+six==1.12.0
+wxPython==4.0.6
