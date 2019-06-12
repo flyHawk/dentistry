@@ -86,10 +86,14 @@ class AddorEditGoodsDialog(wx.Dialog):
 
     def InitListBoxData(self):
         catagories = catagoryservice.get_all_catagories()
-        for row in catagories:
-            self.catagory_lb.Append(row['CATAGORY_NAME'],   row['ID']);
-
-        self.catagory_lb.SetSelection(0)
+        if catagories : 
+            for row in catagories:
+                self.catagory_lb.Append(row['CATAGORY_NAME'],   row['ID']);
+    
+            self.catagory_lb.SetSelection(0)
+        else:
+            wx.MessageBox("暂无物品类别，请先添加物品类别", "温馨提示", wx.OK_DEFAULT|wx.ICON_WARNING)
+            self.Destroy()
         self.vBox.Fit(self)
         
     def OnSave(self, evt):

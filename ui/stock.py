@@ -667,6 +667,18 @@ class StockReportPanel(wx.Panel):
         startdate = self.startdate.GetValue().Format('%Y%m%d')
         enddate = self.endate.GetValue().Format('%Y%m%d')
         
+        params = {
+            'goods_name':  '%' +goodsname+'%',
+            'startdate': self.startdate.GetValue().Format('%Y-%m-%d') ,
+            'enddate': self.endate.GetValue().Format('%Y-%m-%d'),
+            'instock': self.inStock_cb.IsChecked(),
+            'outstock': self.outStock_cb.IsChecked()
+        }
+        data = stockservice.get_stocks_dict(params)
+        if not data:
+            wx.MessageBox("未查询到满足条件的结果，无法下载","温馨提示",wx.OK_DEFAULT|wx.ICON_WARNING)
+            return 
+        
         if self.inStock_cb.IsChecked() and not self.outStock_cb.IsChecked():
             filename_prefix = startdate + '至' + enddate + '入库明细表'
         elif not self.outStock_cb.IsChecked() and self.outStock_cb.IsChecked():
@@ -688,14 +700,7 @@ class StockReportPanel(wx.Panel):
                 wx.BeginBusyCursor()
                 path = dlg.GetPath()
         
-                params = {
-                    'goods_name':  '%' +goodsname+'%',
-                    'startdate': self.startdate.GetValue().Format('%Y-%m-%d') ,
-                    'enddate': self.endate.GetValue().Format('%Y-%m-%d'),
-                    'instock': self.inStock_cb.IsChecked(),
-                    'outstock': self.outStock_cb.IsChecked()
-                }
-                data = stockservice.get_stocks_dict(params)
+                
                 if self.inStock_cb.IsChecked() and not self.outStock_cb.IsChecked():
                     title = startdate + '至' + enddate + '入库明细表'
                     downloadservice.downloadInStockDetail(path, title, data)
